@@ -1,28 +1,23 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8" >
         <title>Interest Product TensorFlow.js</title>
-        <!-- <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script> -->
-        <!-- <script> 
-            var config = {
-                apiKey: "AIzaSyBuACiQBnxBbEjOpiiqfZdj6GedTuillm0",
-                authDomain: "form-interest-product.firebaseapp.com",
-                databaseURL: "https://form-interest-product.firebaseio.com",
-                projectId: "form-interest-product",
-                storageBucket: "",
-                messagingSenderId: "430717162648"
-            };
-            firebase.initializeApp(config);
-        </script> -->
-
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="./form-interest-product-export.js"></script>
-
+        <script type="text/javascript" src="form-interest-product-export.js"></script>
+        <script type="text/javascript" src="scr/form_interest_product.js"></script>
         <style>
+                html {
+                    font-family: verdana; 
+                }
+                button {
+                    width: 70px;
+                    height: 40px;
+                    font-size: 25px;
+                }
                 form {
                   background-color: lightblue;
-                  font-family: verdana;
                 }
                 option {
                     font-size: 25px;
@@ -33,6 +28,7 @@
                 .submit {
                     width: 100px;
                     height: 60px;
+                    font-size: 25px;
                 }
                 .showChatProduct {
                     display: flex;
@@ -43,13 +39,14 @@
                 }
                 #w5 {
                     width: 50%;
-                    border: 1px sloid black
+                    border: 1px sloid black;
                 }
         </style>
     </head>
     <body>
         <div>
-            <form id="form_pr" action="#" onsubmit="getQQ();">
+            <button onclick="train();">เทรน</button>
+            <form id="form_pr" action="#" onsubmit="getQQ()">
                 <input type="text" id="age" /> <br/><br/>
                 <select id='sex'>
                     <option value="ชาย">ชาย</option>
@@ -83,6 +80,5 @@
             </div>
             
         </div>
-        <script src="./scr/form_interest_product.js"></script>
     </body>
 </html>

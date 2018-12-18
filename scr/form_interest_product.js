@@ -1,44 +1,3 @@
-
-// เพิ่มข้อมูล
-// let con = firebase.database().ref('data');
-// function saveData(){
-//     let getAge = document.getElementById('age').value;
-//     let getSex = document.getElementById('sex').value;
-//     let getStatus = document.getElementById('status').value;
-//     let getLorW =  document.getElementById('l_or_w').value;
-//     let getProduct =  document.getElementById('product').value;
-
-//     let data = {
-//         age: getAge,
-//         sex: getSex,
-//         status: getStatus,
-//         l_or_w: getLorW,
-//         product: getProduct
-//     }
-//     con.push(data);
-//     console.log(data)
-// }
-
-
-
-// รับ เตรียมข้อมูล
-// function getData() {
-    // con.on('value', gotData, errdata);
-    //  function gotData(data) {
-    //         Data = data.val();
-    //     // console.log(Data)
-    //         for (let va of Object.entries(Data)) {
-    //             let val = va[1]
-    //             dataAll.push([val.age, val.sex, val.l_or_w, val.status]);
-    //             interest.push(val.product);
-    //         }
-    //     // console.log(dataAll);
-    //     console.log(interest);
-    // }
-    // function errdata(err) {
-    //     console.log("err: "+ err);
-    // } 
-// }
 let dataJ = d; //from form-interest-product-export.js
 let dataJson;
 let dataAll = [];
@@ -90,7 +49,7 @@ const output = tf.layers.dense({
 model.add(hidden);
 model.add(output);
 
-let optimizer = tf.train.sgd(0.2);
+let optimizer = tf.train.sgd(0.7);
 model.compile({
     optimizer: optimizer,
     loss: 'categoricalCrossentropy',
@@ -99,8 +58,8 @@ model.compile({
 
 async function train() {
     await model.fit(xs, ys, {
-        validationSplit: 0,
-        epochs: 2000, 
+        validationSplit: 0.06,
+        epochs: 1000, 
         callbacks: {
             onEpochEnd: (e, l) => {
                 console.log(e, ' ', l.loss);
@@ -112,7 +71,7 @@ async function train() {
     });
 }
 
-train();
+// train();
 
 function getQQ() {
     let getAge = document.getElementById('age').value;
