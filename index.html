@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <meta charset="UTF-8" >
+        <title>Interest Product TensorFlow.js</title>
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script> -->
+        <!-- <script> 
+            var config = {
+                apiKey: "AIzaSyBuACiQBnxBbEjOpiiqfZdj6GedTuillm0",
+                authDomain: "form-interest-product.firebaseapp.com",
+                databaseURL: "https://form-interest-product.firebaseio.com",
+                projectId: "form-interest-product",
+                storageBucket: "",
+                messagingSenderId: "430717162648"
+            };
+            firebase.initializeApp(config);
+        </script> -->
+
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="./form-interest-product-export.js"></script>
+
+        <style>
+                form {
+                  background-color: lightblue;
+                  font-family: verdana;
+                }
+                option {
+                    font-size: 25px;
+                }
+                select {
+                    font-size: 25px;
+                }
+                .submit {
+                    width: 100px;
+                    height: 60px;
+                }
+                .showChatProduct {
+                    display: flex;
+                    flex-direction: row;
+                    width: 60%;
+                    height: 30%;
+                    background-color: aquamarine
+                }
+                #w5 {
+                    width: 50%;
+                    border: 1px sloid black
+                }
+        </style>
+    </head>
+    <body>
+        <div>
+            <form id="form_pr" action="#" onsubmit="getQQ();">
+                <input type="text" id="age" /> <br/><br/>
+                <select id='sex'>
+                    <option value="ชาย">ชาย</option>
+                    <option value="หญิง">หญิง</option>
+                </select> <br/><br/>
+                <select id='status'>
+                        <option value="โสด">โสด</option>
+                        <option value="มีแฟน">มีแฟน</option>
+                    </select> <br/><br/>
+                <select id='l_or_w'>
+                    <option value="เรียน">เรียน</option>
+                    <option value="ทำงาน">ทำงาน</option>
+                </select> <br/>
+                <br/>
+                <!-- <select id='product'>
+                    <option value="อุปกรณ์คอม">อุปกรณ์คอม</option>
+                    <option value="อาหารเสริม">อาหารเสริม</option>
+                    <option value="ของใช้ในบ้าน">ของใช้ในบ้าน</option>
+                    <option value="แฟชั่น">แฟชั่น</option>
+                </select> <br/> -->
+                <br/>
+                <input type="submit" class="submit" value="test"/>
+            </form>
+        </div>
+        <div class="showChatProduct">
+            <div id='w5'>
+                <label id="label"></label>
+            </div>
+            <div id='w5'>
+                <label id="persen"></label>
+            </div>
+            
+        </div>
+        <script src="./scr/form_interest_product.js"></script>
+    </body>
+</html>
