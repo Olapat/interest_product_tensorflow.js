@@ -1,4 +1,4 @@
-let d = 
+let DATA = 
 {
     "-LU-acQzmqfYIoSSjnTM" : {
     "age" : "12",

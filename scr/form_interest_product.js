@@ -1,70 +1,82 @@
-let dataJ = d; //from form-interest-product-export.js
-let dataJson;
-let dataAll = [];
-let interest = [];  
-let keys = Object.keys(dataJ);
+let data = DATA; //รับ Data จาก from form-interest-product-export.js
+let dataInteger = [];
+let interest = [];
+let chart;
+
+let keys = Object.keys(data);
 let labalProduct = ['อุปกรณ์คอม', 'อาหารเสริม', 'แฟชั่น', 'ของใช้ในบ้าน'];
+
+// แทนข้อมูลให้เป็นตัวเลข
 for (let key of keys) {
-    let val = dataJ[key];
+    let val = data[key];
     let ageInt = parseInt(val.age)
-    let ageFlost = ageInt / 60;
+    let ageFloat = ageInt / 100
     let keySex = val.sex === 'ชาย' ? 0 : 1 
     let keyLW = val.l_or_w === 'เรียน' ? 0 : 1
     let keyStatus = val.status === 'โสด' ? 0 : 1
-    let keyProduct = val.product === 'อุปกรณ์คอม' ? 0 : 
-    val.product === 'อาหารเสริม' ? 1 : 
-    val.product === 'แฟชั่น' ? 2 : 3 // 3 = ของใช้ในบ้าน
-    let d = [ageFlost, keySex, keyLW, keyStatus]
-    dataAll.push(d)
+    let keyProduct = val.product === 'อุปกรณ์คอม' ? 0 : val.product === 'อาหารเสริม' ? 1 : 
+        val.product === 'แฟชั่น' ? 2 : 3 // 3 = ของใช้ในบ้าน
+    let d = [ageFloat, keySex, keyLW, keyStatus]
+    dataInteger.push(d)
     interest.push(keyProduct);
 }
 
-// console.log(dataAll);
-// console.log(interest);
+//สร้าง รูปแบบ ข้อมูลเข้า (xs) และ ข้อมูลออก (ys)
 
-//ออกแบบ tensor xs, ys
-let xs = tf.tensor2d(dataAll);
-// xs.print();
+//ข้อมูลนำเข้า (input)
+let xs = tf.tensor2d(dataInteger);
+// xs.print();                 //แสดงผล
 
+//ข้อมูลคำตอบ รูปแบบ array1d
 let interest1D = tf.tensor1d(interest, 'int32');
 // interest1D.print();
 
+//ข้อมูลที่ต้องการ (output)
 let ys = tf.oneHot(interest1D, 4).cast('float32');
-// ys.print();
-interest1D.dispose();
+// ys.print(); 
 
+interest1D.dispose();       //คืนค่า (ไม่จำ)
+
+
+//สร้าง model NN
 let model = tf.sequential();
 
+//สร้าง layers hidden
 const hidden = tf.layers.dense({
-    units: 4,
-    inputShape: [4],
-    activation: 'sigmoid'
+    units: 4,               //จำนวนโหนด
+    inputShape: [4],        //จำนวนค่าที่รับเข้ามา (input)
+    activation: 'sigmoid'      //สูตรสมการที่ใช้
 });
 
+//สร้าง layers output
 const output = tf.layers.dense({
-    units: 4,
-    activation: 'softmax'
+    units: 4,               //จำนวนโหนด
+    activation: 'softmax'   //สูตรสมการที่ใช้
 });
 
+//เพิ่ม layers ที่สร้าง ลงใน model
 model.add(hidden);
 model.add(output);
 
-let optimizer = tf.train.sgd(0.7);
+
+
+let optimizer = tf.train.sgd(0.2); //กำหนดค่า sgb (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
 model.compile({
-    optimizer: optimizer,
-    loss: 'categoricalCrossentropy',
-    metrics: ['accuracy']
+    optimizer: optimizer,          //นำตัวแปล optimizer มาใช้
+    loss: 'categoricalCrossentropy', //กำหนด ค่า loss (ค่าสูญเสีย)
+    metrics: ['accuracy']          //กำหนด ค่า accuracy (ค่าความแม่นยำ)
 });
 
-async function train() {
-    await model.fit(xs, ys, {
-        validationSplit: 0.06,
-        epochs: 1000, 
-        callbacks: {
-            onEpochEnd: (e, l) => {
-                console.log(e, ' ', l.loss);
+// function การเรียนรู้ หรือ ทดสอบ
+async function train() {        
+    await model.fit(xs, ys, {   //ใส่ค่า input, output 
+        validationSplit: 0.1,     //กำหนดค่าความสูญเสียของข้อมูล
+        epochs: 500,            //จำนวนรอบในการเรียนรู้
+        callbacks: {            //กำหนดการทำงานในระหว่างการเรียนรู้
+            onEpochEnd: (e, l) => {     //เมื่อเรียนรู้เสร็จในแต่ระรอบ
+                console.log(e, '|', l.loss);
             },
-            onTrainEnd: () => {
+            onTrainEnd: () => {         //เมื่อเรียนรู้สำเร็จ
                 console.log("เทรดเสร็จแล้ว");
             }
         }
@@ -73,54 +85,68 @@ async function train() {
 
 // train();
 
-function getQQ() {
-    let getAge = document.getElementById('age').value;
+//function รับข้อมูลจาก index.html
+function getData() {
+    let getAge = document.getElementById('age').value; 
     let getSex = document.getElementById('sex').value;
     let getStatus = document.getElementById('status').value;
     let getLorW =  document.getElementById('l_or_w').value;
 
-    let getAgeInt = parseInt(getAge);
-    let getKeySex = getSex === 'ชาย' ? 0 : 1 ;
+    // แทนข้อมูลให้เป็นตัวเลข เช่นเดียวกับการสร้างข้อมูลให้ AI เรียนรู้
+    let getAgeInt = parseInt(getAge);  //แปลง string เป็น int 
+    let getKeySex = getSex === 'ชาย' ? 0 : 1 ; 
     let getKeyLW = getLorW === 'เรียน' ? 0 : 1;
     let getKeyStatus = getStatus === 'โสด' ? 0 : 1;
 
-    let test2D = [
+    let arrayData = [      //ยัดข้อมูลที่แปลง ลง array 
         [getAgeInt / 60, getKeySex, getKeyLW, getKeyStatus]
     ]
 
-    let totensor2D = tf.tensor2d(test2D);
-    // console.log(totensor2D);
-    toAi(totensor2D);
+    let dataTensor2D = tf.tensor2d(arrayData); //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
+    toAITest(dataTensor2D);   //ส่งค่าไปที่ function toAITest เพื่อให้ AI วิเคราะห์
 }
 
-function toAi(dataTest) {
-    tf.tidy(() => {
-        let results = model.predict(dataTest);
-        results.print();
-        let resultsDataSync = results.dataSync();
-        let chat = Array.from(resultsDataSync);
-        // let argMax = results.argMax(1);
-        // let indexProductOfTest =  argMax.dataSync();
-        // let topProduct = labalProduct[indexProductOfTest];
-        // console.log(topProduct);
-        let chatMaxToMin = chat.slice(); //clone
 
-        chatMaxToMin.sort(function(a, b){ //เรียง ม - น
+//function ในการ ให้ AI วิเคราะห์หาผลลัพธ์ จากข้อมูลที่เราให้ AI เรียนรู้
+function toAITest(dataTest) {
+    let chartMaxToMin = [];
+    tf.tidy(() => {
+        let results = model.predict(dataTest);      //ส่งข้อมูลให้ AI วิเคราะห์
+        results.print();                            //ผลลัพธ์ รูปแบบ arrayTensor
+        let resultsDataSync = results.dataSync();   //ผลลัพธ์ รูปแบบ float 32
+        chart = Array.from(resultsDataSync);    //ผลลัพธ์ รูปแบบ array ปกติ
+        chartMaxToMin = chart.slice();          //clone เพื่อนำไปเรียงลำดับ
+        chartMaxToMin.sort(function(a, b){          //เรียงจาก มาก - น้อย
             return b-a
         });
-        // console.log(chat);
-        // console.log(chatMaxToMin);
-        let displayChatLabel = [];
-        let displayChatPersen = [];
-        chatMaxToMin.forEach((va) => {
-            let indexLabalProduct = chat.indexOf(va)
-            let persen = va * 100
-            displayChatLabel.push('<b>'+labalProduct[indexLabalProduct]+'</b> <br/>');
-            displayChatPersen.push(persen.toFixed(2)+'<br/>');     
-            let displayLabel = document.getElementById('label');
-            let displayPersen = document.getElementById('persen');
-            displayLabel.innerHTML = displayChatLabel.join('')
-            displayPersen.innerHTML = displayChatPersen.join('')
-        });
-    }) 
+    });
+    
+    //ส่งผลลัพธ์ chart ไปให้ function disPlayResults เพื่อแสดงออกหน้าเว็บ
+    disPlayResults(chartMaxToMin);      
+}
+
+
+
+
+ // function แสดงผลลัพธ์ บน html ตามลำดับ
+function disPlayResults(resultsChart) {
+    let arrDisplay = [];
+    resultsChart.forEach((va) => {
+        //หาค่า index เพื่อแสดงข้อมูล ในรูปแบบ string
+        let indexLabalProduct = chart.indexOf(va);
+        //นำ index ที่ได้ มาดึงข้อมูลสินค้า
+        let displaylabalProduct = labalProduct[indexLabalProduct];  
+
+        let persen = va * 100 // แปลงจาก ทศนิยม เป็น จำนวนเต็ม
+        let displayChartPersen = persen.toFixed(2);  //ปรับเป็นทศนิยม 2 ตำแหน่ง   
+        
+        arrDisplay.push(    //เพิ่ม element (view) เข้าไป array arrDisplay
+            `<tr>
+                <td>${displaylabalProduct}</td>
+                <td>${displayChartPersen}</td>
+            </tr>`
+        );
+        //นำ arrDisplay มาแสดงใน HTML
+        document.getElementById('tex').innerHTML = arrDisplay.join('');
+    });
 }
