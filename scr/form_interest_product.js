@@ -4,8 +4,7 @@ let interest = [];
 let chart;
 
 let keys = Object.keys(data);
-// let labalProduct = ['อุปกรณ์คอม', 'อาหารเสริม', 'แฟชั่น', 'ของใช้ในบ้าน'];
-let labalProduct = ['อุปกรณ์อิเล็กทรอนิกส์', 'สุขภาพและความงาม', 'แฟชั่น', 'ของใช้ในบ้าน', 'เกมและซอฟแวร์'];
+let labalProduct = ['อุปกรณ์อิเล็กทรอนิกส์', 'สุขภาพและความงาม', 'แฟชั่น', 'ของใช้ในบ้านและอุปกรณ์', 'เกมและซอฟแวร์'];
 
 //แทนข้อมูลให้เป็นตัวเลข
 for (let key of keys) {
@@ -15,13 +14,13 @@ for (let key of keys) {
     let keySex = val.sex === 'ชาย' ? 0 : 1 
     let keyStatus = val.status === 'โสด' ? 0 : 1
     let keyProduct = val.product === 'อุปกรณ์อิเล็กทรอนิกส์' ? 0 : val.product === 'สุขภาพและความงาม' ? 1 : 
-        val.product === 'แฟชั่น' ? 2 : val.product === 'ของใช้ในบ้าน' ? 3 : val.product === 'เกมและซอฟแวร์' ? 4 : 
+        val.product === 'แฟชั่น' ? 2 : val.product === 'ของใช้ในบ้านและอุปกรณ์' ? 3 : val.product === 'เกมและซอฟแวร์' ? 4 : 
         5 // 5 = ไมสน
     let d = [ageFloat, keySex, keyStatus]
     dataInteger.push(d)
     interest.push(keyProduct);
 }
-
+console.log(keys.length)
 // console.log(dataInteger);
 // console.log(interest);
 
@@ -47,7 +46,7 @@ let model = tf.sequential();
 
 //สร้าง layers hidden
 const hidden = tf.layers.dense({
-    units: 13,                  //จำนวนโหนด
+    units: 8,                  //จำนวนโหนด
     inputShape: [3],            //จำนวนค่าที่รับเข้ามา (input)
     activation: 'sigmoid'       //สูตรสมการที่ใช้
 });
@@ -64,25 +63,24 @@ model.add(output);
 
 
 
-let optimizer = tf.train.sgd(0.2); //กำหนดค่า sgb (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
+let optimizer = tf.train.sgd(0.15);      //กำหนดค่า sgb (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
 model.compile({
-    optimizer: optimizer,          //นำตัวแปล optimizer มาใช้
-    loss: 'categoricalCrossentropy', //กำหนด ค่า loss (ค่าสูญเสีย)
-    metrics: ['accuracy']          //กำหนด ค่า accuracy (ค่าความแม่นยำ)
+    optimizer: optimizer,               //นำตัวแปล optimizer มาใช้
+    loss: 'categoricalCrossentropy',    //กำหนด ค่า loss (ค่าสูญเสีย)
 });
 
 // function การเรียนรู้ หรือ ทดสอบ
-async function train() {        
-    await model.fit(xs, ys, {   //ใส่ค่า input, output 
-        validationSplit: 0.01,     //กำหนดค่าความสูญเสียของข้อมูล
-        shuffle: true,
-        batchSize: 80,
-        epochs: 2000,            //จำนวนรอบในการเรียนรู้
-        callbacks: {            //กำหนดการทำงานในระหว่างการเรียนรู้
-            onEpochEnd: (e, l) => {     //เมื่อเรียนรู้เสร็จในแต่ระรอบ
+async function train() { 
+    await model.fit(xs, ys, {                   //ใส่ค่า input, output
+        // shuffle: true,                              //สลับข้อมูล 
+        // validationSplit: 0.01,                  //กำหนดค่าความสูญเสียของข้อมูล
+        batchSize: 70,
+        epochs: 800,                           //จำนวนรอบในการเรียนรู้
+        callbacks: {                            //กำหนดการทำงานในระหว่างการเรียนรู้
+            onEpochEnd: (e, l) => {             //เมื่อเรียนรู้เสร็จในแต่ระรอบ
                 console.log(e, '|', l.loss);
             },
-            onTrainEnd: () => {         //เมื่อเรียนรู้สำเร็จ
+            onTrainEnd: () => {                 //เมื่อเรียนรู้สำเร็จ
                 console.log("เทรดเสร็จแล้ว");
             }
         }
@@ -98,16 +96,16 @@ function getData() {
     let getStatus = document.getElementById('status').value;
 
     // แทนข้อมูลให้เป็นตัวเลข เช่นเดียวกับการสร้างข้อมูลให้ AI เรียนรู้
-    let getAgeInt = parseInt(getAge);  //แปลง string เป็น int 
+    let getAgeInt = parseInt(getAge);               //แปลง string เป็น int 
     let getKeySex = getSex === 'ชาย' ? 0 : 1 ; 
     let getKeyStatus = getStatus === 'โสด' ? 0 : 1;
 
-    let arrayData = [      //ยัดข้อมูลที่แปลง ลง array 
+    let arrayData = [                               //ยัดข้อมูลที่แปลง ลง array 
         [getAgeInt / 100, getKeySex, getKeyStatus]
     ]
 
-    let dataTensor2D = tf.tensor2d(arrayData); //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
-    toAITest(dataTensor2D);   //ส่งค่าไปที่ function toAITest เพื่อให้ AI วิเคราะห์
+    let dataTensor2D = tf.tensor2d(arrayData);      //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
+    toAITest(dataTensor2D);                         //ส่งค่าไปที่ function toAITest เพื่อให้ AI วิเคราะห์
 }
 
 
@@ -118,8 +116,8 @@ function toAITest(dataTest) {
         let results = model.predict(dataTest);      //ส่งข้อมูลให้ AI วิเคราะห์
         results.print();                            //ผลลัพธ์ รูปแบบ arrayTensor
         let resultsDataSync = results.dataSync();   //ผลลัพธ์ รูปแบบ float 32
-        chart = Array.from(resultsDataSync);    //ผลลัพธ์ รูปแบบ array ปกติ
-        chartMaxToMin = chart.slice();          //clone เพื่อนำไปเรียงลำดับ
+        chart = Array.from(resultsDataSync);        //ผลลัพธ์ รูปแบบ array ปกติ
+        chartMaxToMin = chart.slice();              //clone เพื่อนำไปเรียงลำดับ
         chartMaxToMin.sort(function(a, b){          //เรียงจาก มาก - น้อย
             return b-a
         });
@@ -142,9 +140,9 @@ function disPlayResults(resultsChart) {
         let displaylabalProduct = labalProduct[indexLabalProduct];  
 
         let persen = va * 100 // แปลงจาก ทศนิยม เป็น จำนวนเต็ม
-        let displayChartPersen = persen.toFixed(2);  //ปรับเป็นทศนิยม 2 ตำแหน่ง   
+        let displayChartPersen = persen.toFixed(2);     //ปรับเป็นทศนิยม 2 ตำแหน่ง   
         
-        arrDisplay.push(    //เพิ่ม element (view) เข้าไป array arrDisplay
+        arrDisplay.push(                                //เพิ่ม element (view) เข้าไป array arrDisplay
             `<tr>
                 <td>${displaylabalProduct}</td>
                 <td>${displayChartPersen}</td>

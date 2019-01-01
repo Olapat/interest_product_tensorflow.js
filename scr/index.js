@@ -73,7 +73,7 @@
 // // const hidden2 = tf.layers.dense({ //เข้า คำถาม
 // //     units: 4,
 // //     inputShape: [4],
-// //     activation: 'sigmoid'
+// //     activation: 'sigmoid'  // || 'relu'
 // // });
 
 // model.add(hidden);
@@ -81,12 +81,12 @@
 // model.add(output);
 
 
-// const optimizer = tf.train.sgd(1.0);
+// const optimizer = tf.train.sgd(1.0); // || adam();
 
 // model.compile({
 //     optimizer: optimizer,
 //     loss: 'categoricalCrossentropy',
-//     matrics: ['accuracy']
+//     matrics: ['accuracy'] //กำหนด ค่า accuracy (ค่าความแม่นยำ)
 // });
 
 // function draw() {
@@ -112,6 +112,8 @@
 
 // async function train () {
 //     await model.fit(xs, ys, {
+        // shuffle: true,                              //สลับข้อมูล 
+        // validationSplit: 0.01,                  //กำหนดค่าความสูญเสียของข้อมูล
 //         validationSplit: 0,
 //         epochs: 1,
 //         callbacks: {
