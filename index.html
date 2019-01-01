@@ -3,9 +3,24 @@
     <head>
         <meta charset="UTF-8" >
         <title>Interest Product TensorFlow.js</title>
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script> -->
+        <!-- <script> 
+            var config = {
+                apiKey: "AIzaSyBuACiQBnxBbEjOpiiqfZdj6GedTuillm0",
+                authDomain: "form-interest-product.firebaseapp.com",
+                databaseURL: "https://form-interest-product.firebaseio.com",
+                projectId: "form-interest-product",
+                storageBucket: "",
+                messagingSenderId: "430717162648"
+            };
+            firebase.initializeApp(config);
+        </script> -->
+        
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"></script>
-        <script type="text/javascript" src="form-interest-product-export.js"></script>
+        
+        <script type="text/javascript" src="data_set.js"></script>
         <script type="text/javascript" src="scr/form_interest_product.js"></script>
+        <script type="text/javascript" src="scr/form_add_data.js"></script>
         <style>
                 html {
                     font-family: verdana;
@@ -42,7 +57,7 @@
         <div>
             <button onclick="train();">เทรน</button>
             <hr/>
-            <form id="form_pr" action="#" onsubmit="getData()">
+            <form id="form_pr" name="formDataSet" action="#" onsubmit="getData()">
                 <table>
                     <tbody>
                         <tr>
@@ -69,15 +84,18 @@
                                 </select>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="label">หน้าที่การงาน:</td>
+                        <!-- <tr>
+                            <td class="label">สินค้า:</td>
                             <td>
-                                <select id='l_or_w'>
-                                    <option value="เรียน">เรียน</option>
-                                    <option value="ทำงาน">ทำงาน</option>
+                                <select id='product'>
+                                    <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
+                                    <option value="สุขภาพและความงาม">สุขภาพและความงาม</option>
+                                    <option value="แฟชั่น">แฟชั่น</option>
+                                    <option value="ของใช้ในบ้าน">ของใช้ในบ้าน</option>
+                                    <option value="เกมและซอฟแวร์">เกมและซอฟแวร์</option>
                                 </select>
                             </td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
                 
@@ -87,7 +105,7 @@
         <hr/>
         <div class="showChartProduct">
             <table id="tex">
-                <!-- /**/ -->
+                
             </table>
         </div>
     </body>

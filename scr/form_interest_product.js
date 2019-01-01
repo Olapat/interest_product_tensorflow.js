@@ -4,36 +4,40 @@ let interest = [];
 let chart;
 
 let keys = Object.keys(data);
-let labalProduct = ['อุปกรณ์คอม', 'อาหารเสริม', 'แฟชั่น', 'ของใช้ในบ้าน'];
+// let labalProduct = ['อุปกรณ์คอม', 'อาหารเสริม', 'แฟชั่น', 'ของใช้ในบ้าน'];
+let labalProduct = ['อุปกรณ์อิเล็กทรอนิกส์', 'สุขภาพและความงาม', 'แฟชั่น', 'ของใช้ในบ้าน', 'เกมและซอฟแวร์'];
 
-// แทนข้อมูลให้เป็นตัวเลข
+//แทนข้อมูลให้เป็นตัวเลข
 for (let key of keys) {
     let val = data[key];
     let ageInt = parseInt(val.age)
     let ageFloat = ageInt / 100
     let keySex = val.sex === 'ชาย' ? 0 : 1 
-    let keyLW = val.l_or_w === 'เรียน' ? 0 : 1
     let keyStatus = val.status === 'โสด' ? 0 : 1
-    let keyProduct = val.product === 'อุปกรณ์คอม' ? 0 : val.product === 'อาหารเสริม' ? 1 : 
-        val.product === 'แฟชั่น' ? 2 : 3 // 3 = ของใช้ในบ้าน
-    let d = [ageFloat, keySex, keyLW, keyStatus]
+    let keyProduct = val.product === 'อุปกรณ์อิเล็กทรอนิกส์' ? 0 : val.product === 'สุขภาพและความงาม' ? 1 : 
+        val.product === 'แฟชั่น' ? 2 : val.product === 'ของใช้ในบ้าน' ? 3 : val.product === 'เกมและซอฟแวร์' ? 4 : 
+        5 // 5 = ไมสน
+    let d = [ageFloat, keySex, keyStatus]
     dataInteger.push(d)
     interest.push(keyProduct);
 }
+
+// console.log(dataInteger);
+// console.log(interest);
 
 //สร้าง รูปแบบ ข้อมูลเข้า (xs) และ ข้อมูลออก (ys)
 
 //ข้อมูลนำเข้า (input)
 let xs = tf.tensor2d(dataInteger);
-// xs.print();                 //แสดงผล
+xs.print();                 //แสดงผล
 
 //ข้อมูลคำตอบ รูปแบบ array1d
 let interest1D = tf.tensor1d(interest, 'int32');
 // interest1D.print();
 
 //ข้อมูลที่ต้องการ (output)
-let ys = tf.oneHot(interest1D, 4).cast('float32');
-// ys.print(); 
+let ys = tf.oneHot(interest1D, 5).cast('float32');
+ys.print(); 
 
 interest1D.dispose();       //คืนค่า (ไม่จำ)
 
@@ -43,14 +47,14 @@ let model = tf.sequential();
 
 //สร้าง layers hidden
 const hidden = tf.layers.dense({
-    units: 4,               //จำนวนโหนด
-    inputShape: [4],        //จำนวนค่าที่รับเข้ามา (input)
-    activation: 'sigmoid'      //สูตรสมการที่ใช้
+    units: 13,                  //จำนวนโหนด
+    inputShape: [3],            //จำนวนค่าที่รับเข้ามา (input)
+    activation: 'sigmoid'       //สูตรสมการที่ใช้
 });
 
 //สร้าง layers output
 const output = tf.layers.dense({
-    units: 4,               //จำนวนโหนด
+    units: 5,               //จำนวนโหนด
     activation: 'softmax'   //สูตรสมการที่ใช้
 });
 
@@ -70,8 +74,10 @@ model.compile({
 // function การเรียนรู้ หรือ ทดสอบ
 async function train() {        
     await model.fit(xs, ys, {   //ใส่ค่า input, output 
-        validationSplit: 0.1,     //กำหนดค่าความสูญเสียของข้อมูล
-        epochs: 500,            //จำนวนรอบในการเรียนรู้
+        validationSplit: 0.01,     //กำหนดค่าความสูญเสียของข้อมูล
+        shuffle: true,
+        batchSize: 80,
+        epochs: 2000,            //จำนวนรอบในการเรียนรู้
         callbacks: {            //กำหนดการทำงานในระหว่างการเรียนรู้
             onEpochEnd: (e, l) => {     //เมื่อเรียนรู้เสร็จในแต่ระรอบ
                 console.log(e, '|', l.loss);
@@ -90,16 +96,14 @@ function getData() {
     let getAge = document.getElementById('age').value; 
     let getSex = document.getElementById('sex').value;
     let getStatus = document.getElementById('status').value;
-    let getLorW =  document.getElementById('l_or_w').value;
 
     // แทนข้อมูลให้เป็นตัวเลข เช่นเดียวกับการสร้างข้อมูลให้ AI เรียนรู้
     let getAgeInt = parseInt(getAge);  //แปลง string เป็น int 
     let getKeySex = getSex === 'ชาย' ? 0 : 1 ; 
-    let getKeyLW = getLorW === 'เรียน' ? 0 : 1;
     let getKeyStatus = getStatus === 'โสด' ? 0 : 1;
 
     let arrayData = [      //ยัดข้อมูลที่แปลง ลง array 
-        [getAgeInt / 60, getKeySex, getKeyLW, getKeyStatus]
+        [getAgeInt / 100, getKeySex, getKeyStatus]
     ]
 
     let dataTensor2D = tf.tensor2d(arrayData); //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
