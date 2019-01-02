@@ -4,23 +4,25 @@ let interest = [];
 let chart;
 
 let keys = Object.keys(data);
-let labalProduct = ['อุปกรณ์อิเล็กทรอนิกส์', 'สุขภาพและความงาม', 'แฟชั่น', 'ของใช้ในบ้านและอุปกรณ์', 'เกมและซอฟแวร์'];
-
+let labalProduct = ['อุปกรณ์อิเล็กทรอนิกส์', 'สุขภาพและความงาม', 'แฟชั่น', 'ของใช้ในบ้านและเครื่องมือต่างๆ', 'เกมและซอฟแวร์'];
+let s = [];
 //แทนข้อมูลให้เป็นตัวเลข
 for (let key of keys) {
     let val = data[key];
-    let ageInt = parseInt(val.age)
-    let ageFloat = ageInt / 100
-    let keySex = val.sex === 'ชาย' ? 0 : 1 
-    let keyStatus = val.status === 'โสด' ? 0 : 1
+    let ageInt = parseInt(val.age);
+    let ageFloat = ageInt / 100;
+    let keySex = val.sex === 'ชาย' ? 0 : 1;
+    keySex === 0 && s.push(0);
+    let keyStatus = val.status === 'โสด' ? 0 : 1;
     let keyProduct = val.product === 'อุปกรณ์อิเล็กทรอนิกส์' ? 0 : val.product === 'สุขภาพและความงาม' ? 1 : 
-        val.product === 'แฟชั่น' ? 2 : val.product === 'ของใช้ในบ้านและอุปกรณ์' ? 3 : val.product === 'เกมและซอฟแวร์' ? 4 : 
+        val.product === 'แฟชั่น' ? 2 : val.product === 'ของใช้ในบ้านและเครื่องมือต่างๆ' ? 3 : val.product === 'เกมและซอฟแวร์' ? 4 : 
         5 // 5 = ไมสน
     let d = [ageFloat, keySex, keyStatus]
     dataInteger.push(d)
     interest.push(keyProduct);
 }
 console.log(keys.length)
+console.log(s.length)
 // console.log(dataInteger);
 // console.log(interest);
 
@@ -46,9 +48,9 @@ let model = tf.sequential();
 
 //สร้าง layers hidden
 const hidden = tf.layers.dense({
-    units: 8,                  //จำนวนโหนด
+    units: 25,                  //จำนวนโหนด
     inputShape: [3],            //จำนวนค่าที่รับเข้ามา (input)
-    activation: 'sigmoid'       //สูตรสมการที่ใช้
+    activation: 'relu'       //สูตรสมการที่ใช้
 });
 
 //สร้าง layers output
@@ -70,21 +72,24 @@ model.compile({
 });
 
 // function การเรียนรู้ หรือ ทดสอบ
+let loss;
 async function train() { 
     await model.fit(xs, ys, {                   //ใส่ค่า input, output
-        // shuffle: true,                              //สลับข้อมูล 
-        // validationSplit: 0.01,                  //กำหนดค่าความสูญเสียของข้อมูล
-        batchSize: 70,
-        epochs: 800,                           //จำนวนรอบในการเรียนรู้
+        shuffle: true,                          //สลับข้อมูล 
+        validationSplit: 0.0,                  //กำหนดค่าความสูญเสียของข้อมูล
+        // batchSize: s.length,
+        epochs: 1,                           //จำนวนรอบในการเรียนรู้
         callbacks: {                            //กำหนดการทำงานในระหว่างการเรียนรู้
             onEpochEnd: (e, l) => {             //เมื่อเรียนรู้เสร็จในแต่ระรอบ
                 console.log(e, '|', l.loss);
+                loss = l.loss.toFixed(5); 
             },
             onTrainEnd: () => {                 //เมื่อเรียนรู้สำเร็จ
                 console.log("เทรดเสร็จแล้ว");
             }
         }
     });
+
 }
 
 // train();
