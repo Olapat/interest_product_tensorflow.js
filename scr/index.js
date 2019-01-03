@@ -114,7 +114,7 @@
 //     await model.fit(xs, ys, {
         // shuffle: true,                              //สลับข้อมูล 
         // validationSplit: 0.01,                  //กำหนดค่าความสูญเสียของข้อมูล
-//         validationSplit: 0,
+        // batchSize: s.length,
 //         epochs: 1,
 //         callbacks: {
 //             onEpochEnd: (epoch, logs) => {
