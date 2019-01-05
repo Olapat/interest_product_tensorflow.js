@@ -62,7 +62,9 @@
 // const hidden = tf.layers.dense({ //เข้า Product
 //     units: 4,
 //     inputShape: [1],
-//     activation: 'sigmoid'
+//     activation: 'sigmoid',
+//     useBias: true               //ใช้ค่าเบี่ยงเบน เพื่อช่วยในการคำนวณ
+
 // });
 
 // const output = tf.layers.dense({

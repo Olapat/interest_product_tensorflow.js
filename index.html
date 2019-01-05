@@ -4,31 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Interest Product TensorFlow.js</title>
-    <!-- <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script> -->
-    <!-- <script> 
-            var config = {
-                apiKey: "AIzaSyBuACiQBnxBbEjOpiiqfZdj6GedTuillm0",
-                authDomain: "form-interest-product.firebaseapp.com",
-                databaseURL: "https://form-interest-product.firebaseio.com",
-                projectId: "form-interest-product",
-                storageBucket: "",
-                messagingSenderId: "430717162648"
-            };
-            firebase.initializeApp(config);
-        </script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script> 
+        var config = {
+            apiKey: "AIzaSyBuACiQBnxBbEjOpiiqfZdj6GedTuillm0",
+            authDomain: "form-interest-product.firebaseapp.com",
+            databaseURL: "https://form-interest-product.firebaseio.com",
+            projectId: "form-interest-product",
+            storageBucket: "",
+            messagingSenderId: "430717162648"
+        };
+        firebase.initializeApp(config);
+    </script> -->
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"></script>
 
     <script type="text/javascript" src="data_set.js"></script>
+    <!-- <script type="text/javascript" src="data_set_rate.js"></script> -->
     <script type="text/javascript" src="scr/form_interest_product.js"></script>
-    <script type="text/javascript" src="scr/form_add_data.js"></script>
+    <!-- <script type="text/javascript" src="scr/tensorflow_rate.js"></script> -->
+    <!-- <script type="text/javascript" src="scr/form_add_data.js"></script> -->
     <style>
         html {
             font-family: verdana;
-        }
-        body {
-            width: 100%;
-            min-height: 100vh;
         }
         #form_pr {
             display: flex;
@@ -60,7 +58,8 @@
 </head>
 
 <body>
-    <button onclick="train();">เทรน</button>
+    <button onclick="train();">เทรน</button> 
+    <button><a href="scr/tensorflow_rate.html?#">rate</a></button> 
     <hr />
     <form id="form_pr" name="formDataSet" action="#" onsubmit="getData()">
         <table>
@@ -90,17 +89,77 @@
                     </td>
                 </tr>
                 <!-- <tr>
-                            <td class="label">สินค้า:</td>
-                            <td>
-                                <select id='product'>
-                                    <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
-                                    <option value="สุขภาพและความงาม">สุขภาพและความงาม</option>
-                                    <option value="แฟชั่น">แฟชั่น</option>
-                                    <option value="ของใช้ในบ้านและเครื่องมือต่างๆ">ของใช้ในบ้านและเครื่องมือต่างๆ</option>
-                                    <option value="เกมและซอฟแวร์">เกมและซอฟแวร์</option>
-                                </select>
-                            </td>
-                        </tr> -->
+                    <td class="label">สินค้า:</td>
+                    <td>
+                        <select id='product'>
+                            <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
+                            <option value="สุขภาพและความงาม">สุขภาพและความงาม</option>
+                            <option value="แฟชั่น">แฟชั่น</option>
+                            <option value="ของใช้ในบ้านและเครื่องมือต่างๆ">ของใช้ในบ้านและเครื่องมือต่างๆ</option>
+                            <option value="เกมและซอฟแวร์">เกมและซอฟแวร์</option>
+                        </select>
+                    </td>
+                </tr> -->
+                <!-- <tr>
+                    <td class="label">อุปกรณ์อิเล็กทรอนิกส์:</td>
+                    <td>
+                        <select id="อุปกรณ์อิเล็กทรอนิกส์">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">สุขภาพและความงาม:</td>
+                    <td>
+                        <select id="สุขภาพและความงาม">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">แฟชั่น:</td>
+                    <td>
+                        <select id="แฟชั่น">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">ของใช้ในบ้านและเครื่องมือต่างๆ:</td>
+                    <td>
+                        <select id="ของใช้ในบ้านและเครื่องมือต่างๆ">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">เกมและซอฟแวร์:</td>
+                    <td>
+                        <select id="เกมและซอฟแวร์">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </td>
+                </tr> -->
             </tbody>
         </table>
 

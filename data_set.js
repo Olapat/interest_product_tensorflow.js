@@ -254,7 +254,7 @@ let DATA =
     },
     "-LVBwMoJxMHgJfVRycov": {
         "age": "21",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -302,7 +302,7 @@ let DATA =
     },
     "-LVBwQUAbpPnQ1TTdVOS": {
         "age": "23",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "เกมและซอฟแวร์",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -314,7 +314,7 @@ let DATA =
     },
     "-LVBwRTIXXEHL10SA-tD": {
         "age": "24",
-        "product": "แฟชั่น",
+        "product": "เกมและซอฟแวร์",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -332,13 +332,13 @@ let DATA =
     },
     "-LVBwSUZvqlsO48n3py3": {
         "age": "25",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "เกมและซอฟแวร์",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwSggPwGYTTdMOgSB": {
         "age": "25",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -356,7 +356,7 @@ let DATA =
     },
     "-LVBwTmI0r82ycsS6qED": {
         "age": "26",
-        "product": "แฟชั่น",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -374,7 +374,7 @@ let DATA =
     },
     "-LVBwUvQzZF01L0b4l34": {
         "age": "27",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -410,7 +410,7 @@ let DATA =
     },
     "-LVBwYcIBQcuUP0L0_7y": {
         "age": "29",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -452,7 +452,7 @@ let DATA =
     },
     "-LVBwcMZxqBjq8nMl24X": {
         "age": "32",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -500,7 +500,7 @@ let DATA =
     },
     "-LVBwf72Z0D38DsW6sOi": {
         "age": "34",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -518,7 +518,7 @@ let DATA =
     },
     "-LVBwgFYX1N086s0kvCI": {
         "age": "35",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -548,7 +548,7 @@ let DATA =
     },
     "-LVBwjOBRcTVuoaiA-FC": {
         "age": "37",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "เกมและซอฟแวร์",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -566,7 +566,7 @@ let DATA =
     },
     "-LVBwksZwrOn4zfYfTJ6": {
         "age": "38",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -584,25 +584,25 @@ let DATA =
     },
     "-LVBwmivv2IW-iigimDe": {
         "age": "39",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "อุปกรณ์อิเล็กทรอนิกส์",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwmoI8JwpV5nSneLU": {
         "age": "39",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwnVQC2JdT9r9s1mX": {
         "age": "40",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwnXIFgikSZRATVDw": {
         "age": "40",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -614,13 +614,13 @@ let DATA =
     },
     "-LVBwomv_ra966bqyEzJ": {
         "age": "41",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwoonXuI8sJFDoeiz": {
         "age": "41",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -638,7 +638,7 @@ let DATA =
     },
     "-LVBwqv2o6sZXM5cMf_Y": {
         "age": "42",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -650,19 +650,19 @@ let DATA =
     },
     "-LVBwrxZbkBJWm12F8r2": {
         "age": "43",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBws22k-YyVadAVSRr": {
         "age": "43",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwsI3l7YuTHIJ_xIB": {
         "age": "43",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "อุปกรณ์อิเล็กทรอนิกส์",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -674,19 +674,19 @@ let DATA =
     },
     "-LVBwsxYU2EODvCy4kMB": {
         "age": "44",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwtEY4iNES9Ow6SDM": {
         "age": "44",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwu9IImXaAjxoosmm": {
         "age": "45",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -704,13 +704,13 @@ let DATA =
     },
     "-LVBwvKI6_E-p0mJAffv": {
         "age": "46",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "อุปกรณ์อิเล็กทรอนิกส์",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwviAwQI9I-zIbomZ": {
         "age": "46",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -728,13 +728,13 @@ let DATA =
     },
     "-LVBwyEYgfKFMYMxGiJY": {
         "age": "47",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBwyWY_fCr4DWOoZMy": {
         "age": "47",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -746,7 +746,7 @@ let DATA =
     },
     "-LVBwzbf160LfP6zUL8j": {
         "age": "48",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -758,7 +758,7 @@ let DATA =
     },
     "-LVBx-sAR4PKwcjfOcRY": {
         "age": "49",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -788,7 +788,7 @@ let DATA =
     },
     "-LVBx2RYVOs-9scHqA5G": {
         "age": "50",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -806,7 +806,7 @@ let DATA =
     },
     "-LVBx48AM-gSUKFQPyN4": {
         "age": "51",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -842,7 +842,7 @@ let DATA =
     },
     "-LVBx7nAy6ivn_I6dXco": {
         "age": "53",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -860,13 +860,13 @@ let DATA =
     },
     "-LVBx952u9EJbrB4vHF5": {
         "age": "54",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBx9j2_FRKgg9il3O2": {
         "age": "55",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -878,13 +878,13 @@ let DATA =
     },
     "-LVBxAJPVFh8bo781s8U": {
         "age": "55",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
     "-LVBxB2n-auxBmj5yU_6": {
         "age": "56",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -914,7 +914,7 @@ let DATA =
     },
     "-LVBxCqQyWf0hZne-hOz": {
         "age": "57",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -932,7 +932,7 @@ let DATA =
     },
     "-LVBxDgvddBysWT6IWlu": {
         "age": "58",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -944,7 +944,7 @@ let DATA =
     },
     "-LVBxEZY6TH-KrWw3Zz2": {
         "age": "59",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "แฟชั่น",
         "sex": "ชาย",
         "status": "โสด"
     },
@@ -1202,13 +1202,13 @@ let DATA =
     },
     "-LVBxpBYv_Zs8rG2PBR2": {
         "age": "19",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "เกมและซอฟแวร์",
         "sex": "ชาย",
         "status": "มีแฟน"
     },
     "-LVBxpoAVufh_SzR3QdX": {
         "age": "20",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "สุขภาพและความงาม",
         "sex": "ชาย",
         "status": "มีแฟน"
     },
@@ -1310,7 +1310,7 @@ let DATA =
     },
     "-LVBxyUfJoubTSJxftCU": {
         "age": "25",
-        "product": "อุปกรณ์อิเล็กทรอนิกส์",
+        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
         "sex": "ชาย",
         "status": "มีแฟน"
     },
@@ -2432,7 +2432,7 @@ let DATA =
     },
     "-LVBzccHQCjmRDJFnVkh": {
         "age": "40",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "แฟชั่น",
         "sex": "หญิง",
         "status": "โสด"
     },
@@ -2468,13 +2468,13 @@ let DATA =
     },
     "-LVBzggPlgUDyYooJBBe": {
         "age": "42",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "หญิง",
         "status": "โสด"
     },
     "-LVBzgiPa_VmySS4e0WV": {
         "age": "42",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "แฟชั่น",
         "sex": "หญิง",
         "status": "โสด"
     },
@@ -2534,7 +2534,7 @@ let DATA =
     },
     "-LVBzmV94CDiPLBTmOTr": {
         "age": "46",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "แฟชั่น",
         "sex": "หญิง",
         "status": "โสด"
     },
@@ -2564,7 +2564,7 @@ let DATA =
     },
     "-LVBzqL8uIp6zD3Qgs_Z": {
         "age": "48",
-        "product": "แฟชั่น",
+        "product": "สุขภาพและความงาม",
         "sex": "หญิง",
         "status": "โสด"
     },
@@ -2618,7 +2618,7 @@ let DATA =
     },
     "-LVBzuP0NVw6NNZnc4lC": {
         "age": "51",
-        "product": "ของใช้ในบ้านและเครื่องมือต่างๆ",
+        "product": "สุขภาพและความงาม",
         "sex": "หญิง",
         "status": "โสด"
     },
@@ -2642,7 +2642,7 @@ let DATA =
     },
     "-LVBzwNtlcE1K_1X18UL": {
         "age": "52",
-        "product": "แฟชั่น",
+        "product": "สุขภาพและความงาม",
         "sex": "หญิง",
         "status": "โสด"
     },
@@ -3439,3 +3439,67 @@ let DATA =
         "status": "มีแฟน"
     }
 }
+
+
+
+
+const setData = {
+    "-LVC08bduAFrJCEKxeSH": {
+        "age": "22",
+        "sex": "หญิง",
+        "status": "มีแฟน",
+        "product": {
+            "อุปกรณ์อิเล็กทรอนิกส์": 1,
+            "ของใช้ในบ้านและเครื่องมือต่างๆ" : 4,
+            "เกมและซอฟแวร์": 2,
+            "แฟชั่น": 5,
+            "สุขภาพและความงาม": 3
+        }
+    },
+    "-LVC08bduAFrJCEKxeSj": {
+        "age": "22",
+        "sex": "หญิง",
+        "status": "โสด",
+        "product": {
+            "อุปกรณ์อิเล็กทรอนิกส์": 1,
+            "ของใช้ในบ้านและเครื่องมือต่างๆ" : 2,
+            "เกมและซอฟแวร์": 3,
+            "แฟชั่น": 5,
+            "สุขภาพและความงาม": 4
+        }
+    },
+    "-LVC08bduAFrJCEKxeSq": {
+        "age": "22",
+        "sex": "ชาย",
+        "status": "มีแฟน",
+        "product": {
+            "อุปกรณ์อิเล็กทรอนิกส์": 2,
+            "ของใช้ในบ้านและเครื่องมือต่างๆ" : 3,
+            "เกมและซอฟแวร์": 4,
+            "แฟชั่น": 5,
+            "สุขภาพและความงาม": 1
+        }
+    },
+    "-LVC08bduAFrJCEKxeSw": {
+        "age": "22",
+        "sex": "ชาย",
+        "status": "โสด",
+        "product": {
+            "อุปกรณ์อิเล็กทรอนิกส์": 3,
+            "ของใช้ในบ้านและเครื่องมือต่างๆ" : 2,
+            "เกมและซอฟแวร์": 5,
+            "แฟชั่น": 4,
+            "สุขภาพและความงาม": 1
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Interest Product_Rate TensorFlow.js</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"></script>
+
+    <script type="text/javascript" src="../data_set_rate.js"></script>
+    <script type="text/javascript" src="tensorflow_rate.js"></script>
+    <style>
+        html {
+            font-family: verdana;
+        }
+        #form_pr {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background-color: lightblue;
+        }
+        button, option, select, .submit, .showChartProduct, #age {
+            font-size: 25px;
+        }
+        .submit {
+            align-self: center;
+            margin-top: 24px;
+        }
+        .showChartProduct {
+            display: flex;
+            width: 100%;
+        }
+        table#tex {
+            background-color: aquamarine;
+            width: 100%;
+        }
+        td.label {
+            text-align: end;
+            padding-right: 12px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="train();">เทรน</button>
+    <hr />
+    <form id="form_pr" name="formDataSet" action="#" onsubmit="getData()">
+        <table>
+            <tbody>
+                <tr>
+                    <td class="label">อายุ:</td>
+                    <td>
+                        <input type="text" id="age" required pattern="[0-9]{1,2}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">เพศ:</td>
+                    <td>
+                        <select id='sex'>
+                            <option value="ชาย">ชาย</option>
+                            <option value="หญิง">หญิง</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">สถานภาพ:</td>
+                    <td>
+                        <select id='status'>
+                            <option value="โสด">โสด</option>
+                            <option value="มีแฟน">มีแฟน</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <input type="submit" class="submit" value="ผลลัพธ์" />
+    </form>
+    <hr />
+    <div class="showChartProduct">
+        <table id="tex">
+
+        </table>
+    </div>
+</body>
+
+</html>
