@@ -1,104 +1,129 @@
-let data = DATA;
-let dataInteger = [];
-let rateProduct = [];
+const data = DATA;
+let inputData = [];
+let outputData = [];
 let labalProduct;
-let keys = Object.keys(data);
-tf.util.shuffle(keys);
 
-const numData = keys.length;
-console.log(numData);
+//เตรียมข้อมูล แปลงเป็นตัวเลข / แยก Input Output
+const keys = Object.keys(data);         //ดึงเอา key จากข้อมูล
+const numData = keys.length;            //จำนวนข้อมูลทั้งหมด
+tf.util.shuffle(keys);                  //สลับข้อมูล
+console.log(keys);
 
-tf.tidy(()=> {
-    for (const key of keys) {
-        let value = data[key];
-        let ageInt = parseInt(value.age);
-        let ageFloat = ageInt / 100;
-        let keySex = value.sex === 'ชาย' ? 0 : 1;
+tf.tidy(()=> {            //tidy เป็น function ที่จะคืนค่า memory หลังจากทำงานเสร็จ
+    //วนรูปเพื่อนำข้อมูลแต่ละตัวมาแปลงเป็นตัวเลข และแยกออกเป็น Input, Output
+    for (const key of keys) {    //วนรูปตามจำนวนข้อมูล
+        let value = data[key];   //เก็บข้อมูลของ key นั้นๆ ไว้ในตัวแปล value
+        let ageInt = parseInt(value.age); //แปลงข้อมูลอายุจาก string เป็น Integer
+        let ageFloat = ageInt / 100;  //หารด้วย 100 เพื่อลดค่าให้เหลือระหว่าง 0 - 1
+
+        //ตรวจสอบ เพศว่าเท่ากับ ชาย หรือไม่ ถ้าใช้ ให้แทนเป็นตัวเลข  0 ถ้าไม่ แทนเป็น 1
+        let keySex = value.sex === 'ชาย' ? 0 : 1;     
+        
+        //ตรวจสอบ สถานะว่าเท่ากับ โสด หรือไม่ ถ้าใช้ ให้แทนเป็นตัวเลข  0 ถ้าไม่ แทนเป็น 1
         let keyStatus = value.status === 'โสด' ? 0 : 1;
-        dataInteger.push([ageFloat, keySex, keyStatus]);
-        let valueP = Object.values(data[key].productRate);
-        let newVaP = [];
-        valueP.forEach((va) => {
-            let h = parseInt(va) / 5;
-            let hh = h.toFixed(1);
-            let hhh = parseFloat(hh);
-            newVaP.push(hhh);
+
+        //เพิ่มข้อมูลที่แปลงแล้วลงใน array inputData เป็นข้อมูล Input
+        inputData.push([ageFloat, keySex, keyStatus]);  
+
+        //เก็บค่าจาก productRate ไว้ในตัวแปล valueAllProductRate
+        let valueAllProductRate = Object.values(data[key].productRate);
+
+        let valueProductRate = [];
+        //วนรูปเพื่อนำเอาค่าคะแนนจาก productRate (คะแนน) มาแปลงเป็นเป็นตัวเลข
+        valueAllProductRate.forEach((va) => {
+            /*แปลงข้อมูลคะแนนจาก string เป็น Integer แล้ว 
+            หาร 5 (คะแนนสูงสุด) เพื่อลดค่าให้เหลือระหว่าง 0 - 1 */
+            let valueFloat = parseInt(va) / 5;       
+
+            //ปรับให้เป็น ทศนิยม 1 ตำแหน่ง
+            let valueStringFloatOne = valueFloat.toFixed(1);        
+
+            /*เนื่องจากการปรับทศนิยมการบรรทัดที่แล้วด้วยคำสั้ง toFixed 
+            ทำให้ค่ากลับเป็น string ดังนั้นจึงต้องแปลงค่าให้เป็น float */
+            let valueFloatOne = parseFloat(valueStringFloatOne);
+
+            //เพิ่มข้อมูลที่แปลงแล้วลงใน array valueProductRate
+            valueProductRate.push(valueFloatOne);                   
         });
-        rateProduct.push(newVaP);
-        labalProduct = Object.keys(data[key].productRate);
+
+        //เพิ่ม valueProductRate ลงใน array outputData
+        outputData.push(valueProductRate);             
+        
+        //เก็บคีย์จาก productRate ไว้ในตัวแปล labalProduct
+        labalProduct = Object.keys(data[key].productRate);  
     }
 }); 
-
 
 // console.log(dataInteger);
 // console.log(rateProduct);
 // console.log(labalProduct);
 
-const numTestData = Math.round(numData * 0.8);
-const numTrainData = numData - numTestData;
-const xDim = dataInteger[0].length;
-const numClass = labalProduct.length;
-console.log(numTestData);
+const numTestData = Math.round(numData * 0.8);      //กำหนดขนาดของข้อมูลไว้สำหรับ test 80%
+const numTrainData = numData - numTestData;         //กำหนดขนาดของข้อมูลที่เหลือไว้สำหรับ train
+const xDim = inputData[0].length;                   //กำหนดขนาด Input (3)
+const numClass = labalProduct.length;               //จำนวนข้อมูล Class (คำตอบ)
 
 //สร้าง รูปแบบ ข้อมูลเข้า (xs) และ ข้อมูลออก (ys)
 
 //ข้อมูลนำเข้า (input)
 
-let xs = tf.tensor2d(dataInteger);
+let xs = tf.tensor2d(inputData);                    //สร้าง Input เป็น tensor2d
 xs.print();                 //แสดงผล
 
-let ys = tf.tensor2d(rateProduct);
+let ys = tf.tensor2d(outputData);                   //สร้าง Output เป็น tensor2d
 ys.print();
 
-const xTrain = xs.slice([0, 0], [numTrainData, xDim]);
-const xTest = xs.slice([numTrainData, 0], [numTestData, xDim]);
-const yTrain = ys.slice([0, 0], [numTrainData, numClass]);
-const yTest = ys.slice([0, 0], [numTestData, numClass]);
+//แบ่งข้อมูลไว้สำหรับ Train และ Test
+const xTrain = xs.slice([0, 0], [numTrainData, xDim]);          //แบ่งข้อมูล Input สำหรับ Train
+const xTest = xs.slice([numTrainData, 0], [numTestData, xDim]); //แบ่งข้อมูล Input สำหรับ Test
+const yTrain = ys.slice([0, 0], [numTrainData, numClass]);      //แบ่งข้อมูล Output สำหรับ Train
+const yTest = ys.slice([0, 0], [numTestData, numClass]);        //แบ่งข้อมูล Output สำหรับ Test
 
 //สร้าง model NN
-let model = tf.sequential();
+let model = tf.sequential();        //สร้าง model
 
 //สร้าง layers hidden
 const hidden = tf.layers.dense({
-    units: 50,                  //จำนวนโหนด
-    inputShape: [xDim],            //จำนวนค่าที่รับเข้ามา (input)
-    activation: 'sigmoid',         //สูตรสมการที่ใช้
-    // useBias: true               //ใช้ค่าเบี่ยงเบน เพื่อช่วยในการคำนวณ
+    units: 50,                      //จำนวนโหนด
+    inputShape: [xDim],             //จำนวนค่าที่รับเข้ามา (input)
+    activation: 'sigmoid',          //function ที่ใช้ในการคำนวณ
 });
 
 //สร้าง layers output
 const output = tf.layers.dense({
-    units: numClass,     //จำนวนโหนด
-    activation: 'softmax',          //สูตรสมการที่ใช้
+    units: numClass,                //จำนวนโหนด
+    activation: 'softmax',          //function ที่ใช้ในการคำนวณ
 });
 
 //เพิ่ม layers ที่สร้าง ลงใน model
 model.add(hidden);
 model.add(output);
 
-let optimizer = tf.train.adam(0.01);      //กำหนดค่า sgd (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
+let optimizer = tf.train.adam(0.02);    //กำหนดค่า adam (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
 model.compile({
-    optimizer: optimizer,                   //นำตัวแปล optimizer มาใช้
-    loss: 'categoricalCrossentropy',         //กำหนด ค่า loss (ค่าสูญเสีย) กำหนดตัวชี้วัดความแตกต่างกันระหว่างเอาท์พุทที่ได้ระหว่างการเรียนรู้ กับ ผลลัพธ์(ที่เรากำหนดให้ ใน ys)
-    metrics: ['accuracy']                  //กำหนด ค่า accuracy (ค่าความแม่นยำ)
+    optimizer: optimizer,               //นำตัวแปล optimizer มาใช้
+    loss: 'categoricalCrossentropy',    //กำหนด loss function ที่ใช้ในการเปรียบเทียบผลลัพธ์ ที่ได้ระหว่างการเรียนรู้ กับ ผลลัพธ์(ที่เรากำหนดให้ ใน ys)
+    metrics: ['accuracy']               //กำหนด ค่า accuracy (ค่าความแม่นยำ)
 });
 
-// function การเรียนรู้ หรือ ทดสอบ
+//Train Data
 async function train() {
-    await model.fit(xTrain, yTrain, {                       //ใส่ค่า input, output
-        epochs: 500,                                //จำนวนรอบในการเรียนรู้
-        validationData: [xTest, yTest],
-        callbacks: {                                //กำหนดการทำงานในระหว่างการเรียนรู้
-            onEpochEnd: (e, l) => {                 //เมื่อเรียนรู้เสร็จในแต่ระรอบ
-                console.log(e);                     //แสดงจำนวนรอบผ่าน console
-                console.log(l.loss.toFixed(5), ':', l.acc);     //แสดงค่าความสูญเสิยผ่าน console ในรูปแบบทศนิยม 5 ตำแหน่ง
+    //เริ่ม Train โดยระบุรายละเอียด ดังนี้
+    await model.fit(xTrain, yTrain, {               //ข้อมูลสำหรับ Train
+        epochs: 500,                                //จำนวนรอบ
+        validationData: [xTest, yTest],             //ข้อมูลสำหรับ Test
+        callbacks: {                                //เพิ่มการทำงานในระหว่าง Train
+            //ทำงานเมื่อ Train เสร็จในแต่ระรอบ
+            onEpochEnd: (e, l) => {                 
+                console.log(e);                                 //แสดงจำนวนรอบผ่าน console
+                console.log(l.loss.toFixed(5), ':', l.acc);     //แสดงค่า loss ในรูปแบบทศนิยม 5 ตำแหน่ง และ ค่า acc ผ่าน console 
             },
-            onTrainEnd: () => {                     //เมื่อเรียนรู้สำเร็จ
-                console.log("เทรดเสร็จแล้ว");          //แสดงข้อความผ่าน console
+            //ทำงานเมื่อ Train ครบแล้ว
+            onTrainEnd: () => {                     
+                console.log("เทรดเสร็จแล้ว");          //แสดงข้อความเตือนผ่าน console
             }
         }
     });
-    // console.log(loss);
 }
 
 // train();
@@ -126,7 +151,7 @@ function getData() {
 //function ในการ ให้ AI วิเคราะห์หาผลลัพธ์ จากข้อมูลที่เราให้ AI เรียนรู้
 function toAITest(dataTest) {
     let chartMaxToMin = [];
-    tf.tidy(() => {                                 //tidy เป็น fn ที่จะคืนค่า memory หลังจากทำงานเสร็จ
+    tf.tidy(() => {                                 //tidy เป็น function ที่จะคืนค่า memory หลังจากทำงานเสร็จ
         let results = model.predict(dataTest);      //ส่งข้อมูลให้ AI วิเคราะห์
         results.print();                            //แสดงผลลัพธ์ รูปแบบ arrayTensor
         let resultsDataSync = results.dataSync();   //เก็บค่าผลลัพธ์ รูปแบบ float 32
@@ -138,11 +163,11 @@ function toAITest(dataTest) {
     });
     
     //ส่งผลลัพธ์ ที่ผ่านการเรียงลำดับแล้ว ไปให้ function disPlayResults เพื่อแสดงออกหน้าเว็บ
-    disPlayResults(chartMaxToMin);      
+    displayResults(chartMaxToMin);      
 }
 
 // function แสดงผลลัพธ์ บน html ตามลำดับ
-function disPlayResults(resultsChart) {
+function displayResults(resultsChart) {
     let arrDisplay = [];
     resultsChart.forEach((va) => {
         //หาค่า index เพื่อแสดงข้อมูล ในรูปแบบ string

@@ -84,37 +84,43 @@ model.add(hidden);
 model.add(output);
 
 
-
-let optimizer = tf.train.adam(0.001);      //กำหนดค่า sgb (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
+//กำหนดค่า adam (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
+let optimizer = tf.train.adam(0.001);      
 model.compile({
-    optimizer: optimizer,               //นำตัวแปล optimizer มาใช้
-    loss: 'categoricalCrossentropy',    //กำหนด ค่า loss (ค่าสูญเสีย)
+    optimizer: optimizer,    //นำตัวแปล optimizer มาใช้
+
+    /*กำหนด loss function ที่ใช้ในการเปรียบเทียบผลลัพธ์ 
+    ที่ได้ระหว่างการเรียนรู้ กับ ผลลัพธ์(ที่เรากำหนดให้ ใน ys) */
+    loss: 'categoricalCrossentropy'
 });
 
-// function การเรียนรู้ หรือ ทดสอบ
-async function train() { 
-    await model.fit(xs, ys, {                       //ใส่ค่า input, output
-        // shuffle: true,
-        // validationSplit: 0.1,
-        epochs: 200,                                //จำนวนรอบในการเรียนรู้
-        // batchSize: n_labelOutput,
-        callbacks: {                                //กำหนดการทำงานในระหว่างการเรียนรู้
-            onEpochEnd: (e, l) => {                 //เมื่อเรียนรู้เสร็จในแต่ระรอบ
-                console.log(e);                     //แสดงจำนวนรอบผ่าน console
-                console.log(l.loss.toFixed(5));     //แสดงค่าความสูญเสิยผ่าน console ในรูปแบบทศนิยม 5 หลัก
+//Train Data
+async function train() {
+    //เริ่ม Train โดยระบุรายละเอียด ดังนี้
+    await model.fit(xs, xs, {   //ข้อมูลสำหรับ Train
+        epochs: 200,            //จำนวนรอบ
+        callbacks: {            //เพิ่มการทำงานในระหว่าง Train
+            //ทำงานเมื่อ Train เสร็จในแต่ระรอบ
+            onEpochEnd: (e, l) => {
+                //แสดงจำนวนรอบผ่าน console
+                console.log(e);    
+                //แสดงค่า loss ในรูปแบบทศนิยม 5 ตำแหน่
+                console.log(l.loss.toFixed(5));
             },
-            onTrainEnd: () => {                     //เมื่อเรียนรู้สำเร็จ
-                console.log("เทรดเสร็จแล้ว");          //แสดงข้อความผ่าน console
+            //ทำงานเมื่อ Train ครบแล้ว
+            onTrainEnd: () => {
+                //แสดงข้อความเตือนผ่าน console
+                console.log("เทรดเสร็จแล้ว");
             }
         }
     });
-
 }
 
 // train();
 
 //function รับข้อมูลจาก index.html
 function getData() {
+    //รับค่ามาจาก index.html ตาม ID
     let getAge = document.getElementById('age').value; 
     let getSex = document.getElementById('sex').value;
     let getStatus = document.getElementById('status').value;
@@ -124,49 +130,64 @@ function getData() {
     let getKeySex = getSex === 'ชาย' ? 0 : 1 ; 
     let getKeyStatus = getStatus === 'โสด' ? 0 : 1;
 
-    let arrayData = [                               //ยัดข้อมูลที่แปลง ลง array 
+    //เพิ่มข้อมูลที่แปลง ลง array arrayData ในรูปแบบ array 2d
+    let arrayData = [                               
         [getAgeInt / 100, getKeySex, getKeyStatus]
     ]
 
-    let dataTensor2D = tf.tensor2d(arrayData);      //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
-    toAITest(dataTensor2D);                         //ส่งค่าไปที่ function toAITest เพื่อให้ AI วิเคราะห์
+    //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
+    let dataTensor2D = tf.tensor2d(arrayData);
+    
+    //ส่งค่าไปที่ function toAITest เพื่อให้ AI วิเคราะห์
+    toAITest(dataTensor2D);                         
 }
 
 
 //function ในการ ให้ AI วิเคราะห์หาผลลัพธ์ จากข้อมูลที่เราให้ AI เรียนรู้
 function toAITest(dataTest) {
     let chartMaxToMin = [];
-    tf.tidy(() => {                                 //tidy เป็น fn ที่จะคืนค่า memory หลังจากทำงานเสร็จ
+    tf.tidy(() => {  //tidy เป็น fn ที่จะคืนค่า memory หลังจากทำงานเสร็จ
         let results = model.predict(dataTest);      //ส่งข้อมูลให้ AI วิเคราะห์
-        results.print();                            //แสดงผลลัพธ์ รูปแบบ arrayTensor
-        let resultsDataSync = results.dataSync();   //เก็บค่าผลลัพธ์ รูปแบบ float 32
-        chart = Array.from(resultsDataSync);        //แปลงผลลัพธ์ในเป็นรูปแบบ array ปกติ
-        chartMaxToMin = chart.slice();              //clone array เพื่อนำไปเรียงลำดับ
-        chartMaxToMin.sort(function(a, b){          //เรียงจาก มาก - น้อย
+
+        //แสดงผลลัพธ์ รูปแบบ arrayTensor ผ่าน console
+        results.print();
+
+        //เก็บค่าผลลัพธ์ รูปแบบ float 32
+        let resultsDataSync = results.dataSync();
+
+        //แปลงผลลัพธ์ในเป็นรูปแบบ array ปกติ
+        chart = Array.from(resultsDataSync);
+        
+        //clone array เพื่อนำไปเรียงลำดับ
+        chartMaxToMin = chart.slice();
+        //เรียงจาก มาก - น้อย
+        chartMaxToMin.sort(function(a, b){          
             return b-a
         });
     });
     
-    //ส่งผลลัพธ์ ที่ผ่านการเรียงลำดับแล้ว ไปให้ function disPlayResults เพื่อแสดงออกหน้าเว็บ
-    disPlayResults(chartMaxToMin);      
+    /*ส่งผลลัพธ์ ที่ผ่านการเรียงลำดับแล้ว ไปให้ 
+    function disPlayResults เพื่อแสดงออกหน้าเว็บ */
+    displayResults(chartMaxToMin);      
 }
 
 
 
 
- // function แสดงผลลัพธ์ บน html ตามลำดับ
-function disPlayResults(resultsChart) {
+// function แสดงผลลัพธ์ บน html ตามลำดับ
+function displayResults(resultsChart) {
     let arrDisplay = [];
     resultsChart.forEach((va) => {
         //หาค่า index เพื่อแสดงข้อมูล ในรูปแบบ string
         let indexLabelProduct = chart.indexOf(va);
+        
         //นำ index ที่ได้ มาดึงข้อมูลสินค้า
         let displaylabalProduct = labelProduct[indexLabelProduct];  
 
         let persen = va * 100 // แปลงจาก ทศนิยม เป็น จำนวนเต็ม
-        let displayChartPersen = persen.toFixed(2);     //ปรับเป็นทศนิยม 2 ตำแหน่ง   
+        let displayChartPersen = persen.toFixed(2); //ปรับเป็นทศนิยม 2 ตำแหน่ง   
         
-        arrDisplay.push(                                //เพิ่ม element (view) เข้าไป array arrDisplay
+        arrDisplay.push(    //เพิ่ม element (view) เข้าไป array arrDisplay
             `<tr>
                 <td>${displaylabalProduct}</td>
                 <td>${displayChartPersen}</td>
