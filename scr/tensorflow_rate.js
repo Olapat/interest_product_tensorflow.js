@@ -3,23 +3,11 @@ let dataInteger = [];
 let rateProduct = [];
 let labalProduct;
 let keys = Object.keys(data);
+tf.util.shuffle(keys);
 
-// console.log(keys);
+const numData = keys.length;
+console.log(numData);
 
-// async function shuffleIndex (keys) {
-//     let shuffleIndex = 0,
-//     valueTemporary;
-//     indexKeys = keys.length
-//     while (indexKeys--) {
-//         shuffleIndex = Math.floor(Math.random() * (indexKeys + 1));
-//         valueTemporary = keys[indexKeys];
-//         keys[indexKeys] = keys[shuffleIndex];
-//         keys[shuffleIndex] = valueTemporary;
-//     }
-//     return keys
-// }
-
-// let newkeys = shuffleIndex(keys)
 tf.tidy(()=> {
     for (const key of keys) {
         let value = data[key];
@@ -31,7 +19,10 @@ tf.tidy(()=> {
         let valueP = Object.values(data[key].productRate);
         let newVaP = [];
         valueP.forEach((va) => {
-            newVaP.push(parseInt(va) / 100);
+            let h = parseInt(va) / 5;
+            let hh = h.toFixed(1);
+            let hhh = parseFloat(hh);
+            newVaP.push(hhh);
         });
         rateProduct.push(newVaP);
         labalProduct = Object.keys(data[key].productRate);
@@ -43,6 +34,12 @@ tf.tidy(()=> {
 // console.log(rateProduct);
 // console.log(labalProduct);
 
+const numTestData = Math.round(numData * 0.8);
+const numTrainData = numData - numTestData;
+const xDim = dataInteger[0].length;
+const numClass = labalProduct.length;
+console.log(numTestData);
+
 //สร้าง รูปแบบ ข้อมูลเข้า (xs) และ ข้อมูลออก (ys)
 
 //ข้อมูลนำเข้า (input)
@@ -53,20 +50,25 @@ xs.print();                 //แสดงผล
 let ys = tf.tensor2d(rateProduct);
 ys.print();
 
+const xTrain = xs.slice([0, 0], [numTrainData, xDim]);
+const xTest = xs.slice([numTrainData, 0], [numTestData, xDim]);
+const yTrain = ys.slice([0, 0], [numTrainData, numClass]);
+const yTest = ys.slice([0, 0], [numTestData, numClass]);
+
 //สร้าง model NN
 let model = tf.sequential();
 
 //สร้าง layers hidden
 const hidden = tf.layers.dense({
     units: 50,                  //จำนวนโหนด
-    inputShape: [3],            //จำนวนค่าที่รับเข้ามา (input)
-    activation: 'relu',         //สูตรสมการที่ใช้
-    useBias: true               //ใช้ค่าเบี่ยงเบน เพื่อช่วยในการคำนวณ
+    inputShape: [xDim],            //จำนวนค่าที่รับเข้ามา (input)
+    activation: 'sigmoid',         //สูตรสมการที่ใช้
+    // useBias: true               //ใช้ค่าเบี่ยงเบน เพื่อช่วยในการคำนวณ
 });
 
 //สร้าง layers output
 const output = tf.layers.dense({
-    units: labalProduct.length,     //จำนวนโหนด
+    units: numClass,     //จำนวนโหนด
     activation: 'softmax',          //สูตรสมการที่ใช้
 });
 
@@ -74,7 +76,7 @@ const output = tf.layers.dense({
 model.add(hidden);
 model.add(output);
 
-let optimizer = tf.train.adam(0.001);      //กำหนดค่า sgd (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
+let optimizer = tf.train.adam(0.01);      //กำหนดค่า sgd (ค่าละเอียดในการเรียนรู้) ในตัวแปล optimizer
 model.compile({
     optimizer: optimizer,                   //นำตัวแปล optimizer มาใช้
     loss: 'categoricalCrossentropy',         //กำหนด ค่า loss (ค่าสูญเสีย) กำหนดตัวชี้วัดความแตกต่างกันระหว่างเอาท์พุทที่ได้ระหว่างการเรียนรู้ กับ ผลลัพธ์(ที่เรากำหนดให้ ใน ys)
@@ -83,16 +85,13 @@ model.compile({
 
 // function การเรียนรู้ หรือ ทดสอบ
 async function train() {
-    let loss; 
-    await model.fit(xs, ys, {                       //ใส่ค่า input, output
-        // validationSplit: 0.1,
-        epochs: 333,                                //จำนวนรอบในการเรียนรู้
-        batchSize: 7,
+    await model.fit(xTrain, yTrain, {                       //ใส่ค่า input, output
+        epochs: 500,                                //จำนวนรอบในการเรียนรู้
+        validationData: [xTest, yTest],
         callbacks: {                                //กำหนดการทำงานในระหว่างการเรียนรู้
             onEpochEnd: (e, l) => {                 //เมื่อเรียนรู้เสร็จในแต่ระรอบ
-                console.log(e,' : ', l.acc);                     //แสดงจำนวนรอบผ่าน console
-                loss = l.loss;
-                console.log(l.loss.toFixed(5));     //แสดงค่าความสูญเสิยผ่าน console ในรูปแบบทศนิยม 5 ตำแหน่ง
+                console.log(e);                     //แสดงจำนวนรอบผ่าน console
+                console.log(l.loss.toFixed(5), ':', l.acc);     //แสดงค่าความสูญเสิยผ่าน console ในรูปแบบทศนิยม 5 ตำแหน่ง
             },
             onTrainEnd: () => {                     //เมื่อเรียนรู้สำเร็จ
                 console.log("เทรดเสร็จแล้ว");          //แสดงข้อความผ่าน console
