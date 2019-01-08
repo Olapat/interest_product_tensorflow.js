@@ -1,100 +1,97 @@
-let dataJ = DATA; //from form-interest-product-export.js
-let dataAll = [];
-let interest = [];  
-let keys = Object.keys(dataJ);
-const numExamples = keys.length;
-tf.util.shuffle(keys);
-let labalProduct = ['อุปกรณ์อิเล็กทรอนิกส์', 'สุขภาพและความงาม', 'แฟชั่น', 'ของใช้ในบ้านและเครื่องมือต่างๆ', 'เกมและซอฟแวร์'];
-let numClass = labalProduct.length;
-for (let key of keys) {
-    let val = dataJ[key];
-    let ageInt = parseInt(val.age)
-    let ageFlost = ageInt / 10;
-    let agetoFixed = ageFlost.toFixed(1);
-    let age = parseFloat(agetoFixed);
-    let keySex = val.sex === 'ชาย' ? 0 : 0.1 
-    let keyStatus = val.status === 'โสด' ? 0 : 0.2
-    let keyProduct = val.product === 'อุปกรณ์อิเล็กทรอนิกส์' ? 0 
-        : val.product === 'สุขภาพและความงาม' ? 1 
-        : val.product === 'แฟชั่น' ? 2 
-        : val.product === 'ของใช้ในบ้านและเครื่องมือต่างๆ' ? 3 
-        : 4 // 4 = เกมและซอฟแวร์
-    let sex = age * keySex;
-    let status = age * keyStatus;
-    let d = [age, sex, status]
-    dataAll.push(d)
-    interest.push(keyProduct);
+let data = DATA; //from form-interest-product-export.js
+let dataInput = [];
+let dataOutput = [];  
+
+//เตรียมข้อมูล แปลงเป็นตัวเลข / Input Output 
+const keys = Object.keys(data);     //ดึงเอา key จากข้อมูล
+const numExamples = keys.length;    //จำนวนข้อมูลทั้งหมด
+tf.util.shuffle(keys);              //สลับข้อมูล
+const labalProduct = ['อุปกรณ์อิเล็กทรอนิกส์', 'สุขภาพและความงาม',  //หมวดหมู่สินค้า
+     'แฟชั่น', 'ของใช้ในบ้านและเครื่องมือต่างๆ', 'เกมและซอฟแวร์'];
+const numClass = labalProduct.length;       //จำนวนหมวดหมู่สินค้า
+//วนรูปเพื่อนำข้อมูลแต่ละตัวมาแปลงเป็นตัวเลข และแยกออกเป็น Input, Output
+for (const key of keys) {               //วนรูปตามจำนวนข้อมูล
+    let val = data[key];                //เก็บข้อมูลของ key นั้นๆ ไว้ใน val
+    let ageInt = parseInt(val.age);      //
+    let ageFlost = ageInt / 10;             
+    // let agetoFixed = ageFlost.toFixed(1);
+    // let age = parseFloat(agetoFixed);
+    let keySex = val.sex === 'ชาย' ? 0 : 1;
+    let keyStatus = val.status === 'โสด' ? 0 : 1;
+    //ตรวจสอบ / แทนค่า และ เก็บไว้ใน keyProduct
+    let keyProduct = val.product === 'อุปกรณ์อิเล็กทรอนิกส์' ? 0    //เป็น"อุปกรณ์อิเล็กทรอนิกส์"ให้แทนเป็น 0
+        : val.product === 'สุขภาพและความงาม' ? 1                //เป็น"สุขภาพและความงาม"ให้แทนเป็น 1
+        : val.product === 'แฟชั่น' ? 2                           //เป็น"สุขภาพและความงาม"ให้แทนเป็น 2
+        : val.product === 'ของใช้ในบ้านและเครื่องมือต่างๆ' ? 3        //เป็น"ของใช้ในบ้านและเครื่องมือต่างๆ"ให้แทนเป็น 3
+        : val.product === 'เกมและซอฟแวร์' ? 4                   //เป็น"เกมและซอฟแวร์"ให้แทนเป็น 4
+        : 5 // 5 = ไม่ทราบข้อมูล
+    let d = [ageFlost, keySex, keyStatus]
+    dataInput.push(d)
+    dataOutput.push(keyProduct);
 }
 
-const numTestExamples = Math.round(numExamples * 0.8);
-const numTrainExamples = numExamples - numTestExamples;
-const xDims = dataAll[0].length;
+const numTestExamples = Math.round(numExamples * 0.8);      //กำหนดขนาดของข้อมูลไว้สำหรับ test 80%
+const numTrainExamples = numExamples - numTestExamples;     //กำหนดขนาดของข้อมูลที่เหลือไว้สำหรับ train
+const xDims = dataInput[0].length;                          //กำหนดขนาด Input (3)
 // console.log(interest);
 
 //ออกแบบ tensor xs, ys
-let xs = tf.tensor2d(dataAll);
+let xs = tf.tensor2d(dataInput);                            //สร้าง Input เป็น tensor2d
 // xs.print();
 
-let interest1D = tf.tensor1d(interest, 'int32');
+let interest1D = tf.tensor1d(dataOutput, 'int32');          //สร้าง Output เป็น tensor1d
 // interest1D.print();
 
-let ys = tf.oneHot(interest1D, numClass).cast('float32');
+let ys = tf.oneHot(interest1D, numClass).cast('float32');   //สร้าง Output เป็นแบบ tensorOneHot
 // ys.print();
 interest1D.dispose();
 
-const xTrain = xs.slice([0, 0], [numTrainExamples, xDims]);
-const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims]);
-const yTrain = ys.slice([0, 0], [numTrainExamples, numClass]);
-const yTest = ys.slice([0, 0], [numTestExamples, numClass]);
+//แบ่งข้อมูลไว้สำหรับ Train และ Test
+const xTrain = xs.slice([0, 0], [numTrainExamples, xDims]);                 //แบ่งข้อมูล Input สำหรับ Train
+const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims]);    //แบ่งข้อมูล Input สำหรับ Test
+const yTrain = ys.slice([0, 0], [numTrainExamples, numClass]);              //แบ่งข้อมูล Output สำหรับ Train
+const yTest = ys.slice([0, 0], [numTestExamples, numClass]);                //แบ่งข้อมูล Output สำหรับ Test
 
-const xTrains = [];
-const yTrains = [];
-const xTests = [];
-const yTests = [];
-for (let i = 0; i < numClass.length; ++i) {
-    xTrains.push(xTrain);
-    yTrains.push(yTrain);
-    xTests.push(xTest);
-    yTests.push(yTest);
-}
-
-let model = tf.sequential();
-
+let model = tf.sequential();        //สร้าง model
+//สร้าง hidden layer
 const hidden = tf.layers.dense({
-    units: 50,
-    inputShape: [xDims],
-    activation: 'sigmoid'
+    units: 50,                      //จำนวนโหนด
+    inputShape: [xDims],            //จำนวนค่าที่รับเข้ามา (input) 
+    activation: 'sigmoid'           //function ที่ใช้ในการคำนวณ
 });
 
+//สร้าง output layer
 const output = tf.layers.dense({
-    units: numClass,
-    activation: 'softmax'
+    units: numClass,                //จำนวนโหนด
+    activation: 'softmax'           //function ที่ใช้ในการคำนวณ
 });
 
-model.add(hidden);
+//เพิ่ม layers ที่สร้างลงไปใน model
+model.add(hidden);          
 model.add(output);
-model.summary();
+// model.summary();
 
-let optimizer = tf.train.adam(0.01);
+const optimizer = tf.train.adam(0.01);      //กำหนดความละเอียดในการเรียนรู้ Train
 model.compile({
-    optimizer: optimizer,
-    loss: 'categoricalCrossentropy',
-    metrics: ['accuracy']
+    optimizer: optimizer,                   //ใส่ค่าความละเอียดในการเรียนรู้ที่กำหนดไว้
+    loss: 'categoricalCrossentropy',        //กำหนด loss function ที่ใช้ในการเปรียบเทียบผลลัพธ์
+    metrics: ['accuracy']                   //เพิ่มค่าความแม่นยำไว้ใน metrics 
 });
 
 async function train() {
-    let acc;
-    await model.fit(xTrain, yTrain, {
-        epochs: 1000,
-        validationData: [xTest, yTest], 
-        callbacks: {
-            onEpochEnd: (e, l) => {
-                console.log(e, '|', l.acc);
-                // acc = l.acc;
+    //เริ่ม Train โดยระบุรายละเอียด ดังนี้
+    await model.fit(xTrain, yTrain, {               //ระบุข้อมูลสำหรับ Train
+        epochs: 500,                                //ระบุจำนวนรอบ
+        validationData: [xTest, yTest],             //ระบุข้อมูลสำหรับ Test
+        callbacks: {                                //เพิ่มการทำงานในระหว่าง Train
+            //ทำงานเมื่อ Train จบในแต่ละรอบ
+            onEpochEnd: (e, l) => {                 
+                console.log(e);                     //แสดงจำนวนรอบผ่าน console
+                console.log(l.loss, '|', l.acc);    //แสดงค่า loss และ acc ผ่าน console
             },
+            //ทำงานเมื่อ Train ครบแล้ว
             onTrainEnd: () => {
-                console.log("เทรดเสร็จแล้ว");
-                // console.log(acc);
+                console.log("เทรดเสร็จแล้ว");          //แสดงข้อความเตือนผ่าน console
             }
         }
     });
@@ -108,15 +105,13 @@ function getQQ() {
     let getStatus = document.getElementById('status').value;
 
     let getAgeInt = parseInt(getAge);
-    let getKeySex = getSex === 'ชาย' ? 0 : 0.1 ;
-    let getKeyStatus = getStatus === 'โสด' ? 0 : 0.2;
+    let getKeySex = getSex === 'ชาย' ? 0 : 1 ;
+    let getKeyStatus = getStatus === 'โสด' ? 0 : 1;
     let getAgeFloat = getAgeInt / 10;
     let agetoFixed = getAgeFloat.toFixed(1);
     let getage = parseFloat(agetoFixed);
-    let sex = getage * getKeySex;
-    let status = getage * getKeyStatus;
     let test2D = [
-        [getage, sex, status]
+        [getage, getKeySex, getKeyStatus]
     ]
 
     let totensor2D = tf.tensor2d(test2D);

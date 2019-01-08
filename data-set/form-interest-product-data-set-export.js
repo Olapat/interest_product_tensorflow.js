@@ -1,6 +1,6 @@
 let DATA =
 {
-    "-LVd0gogzuVFDXv9ViG3": {
+    "-LVd0gogzuVFDXv9ViG3": {       //key
         "age": "12",
         "product": "เกมและซอฟแวร์",
         "sex": "ชาย",
