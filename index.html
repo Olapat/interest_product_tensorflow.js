@@ -2,85 +2,82 @@
 <html>
     <head>
         <meta charset="UTF-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Interest Product TensorFlow.js</title>
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type="text/javascript" src="data-set/form-interest-product-data-set-export.js"></script>
         <script type="text/javascript" src="scr/new_interest_product.js"></script>
-        <!-- <script type="text/javascript" src="form-interest-product-export.js"></script> -->
-        <!-- <script type="text/javascript" src="scr/form_interest_product.js"></script> -->
         <style>
-                html {
-                    font-family: verdana; 
-                }
-                button {
-                    width: 70px;
-                    height: 40px;
-                    font-size: 25px;
-                }
-                form {
-                  background-color: lightblue;
-                }
-                option, #age {
-                    font-size: 25px;
-                }
-                select {
-                    font-size: 25px;
-                }
-                .submit {
-                    width: 100px;
-                    height: 60px;
-                    font-size: 25px;
-                }
-                .showChatProduct {
-                    display: flex;
-                    flex-direction: row;
-                    width: 60%;
-                    height: 30%;
-                    background-color: aquamarine
-                }
-                #w5 {
-                    width: 50%;
-                    border: 1px sloid black;
-                }
+            html {
+                font-family: verdana;
+            }
+            #form_pr {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                background-color: lightblue;
+            }
+            button, option, select, .submit, .showChartProduct, #age {
+                font-size: 25px;
+            }
+            .submit {
+                align-self: center;
+                margin-top: 24px;
+            }
+            .showChartProduct {
+                display: flex;
+                width: 100%;
+            }
+            table#ChartProduct {
+                background-color: aquamarine;
+                width: 100%;
+            }
+            td.label {
+                text-align: end;
+                padding-right: 12px;
+                font-size: 18px;
+            }
         </style>
     </head>
     <body>
         <div>
             <button onclick="train();">เทรน</button>
-            <form id="form_pr" action="#" onsubmit="getQQ()">
-                <input type="text" id="age" /> <br/><br/>
-                <select id='sex'>
-                    <option value="ชาย">ชาย</option>
-                    <option value="หญิง">หญิง</option>
-                </select> <br/><br/>
-                <select id='status'>
-                        <option value="โสด">โสด</option>
-                        <option value="มีแฟน">มีแฟน</option>
-                    </select> <br/><br/>
-                <!-- <select id='l_or_w'>
-                    <option value="เรียน">เรียน</option>
-                    <option value="ทำงาน">ทำงาน</option>
-                </select> <br/> -->
-                <br/>
-                <!-- <select id='product'>
-                    <option value="อุปกรณ์คอม">อุปกรณ์คอม</option>
-                    <option value="อาหารเสริม">อาหารเสริม</option>
-                    <option value="ของใช้ในบ้าน">ของใช้ในบ้าน</option>
-                    <option value="แฟชั่น">แฟชั่น</option>
-                </select> <br/> -->
-                <br/>
-                <input type="submit" class="submit" value="test"/>
+            <hr/>
+            <form id="form_pr" name="formDataSet" action="#" onsubmit="getData()">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="label">อายุ:</td>
+                            <td>
+                                <input type="text" id="age" required pattern="[0-9]{1,2}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label">เพศ:</td>
+                            <td>
+                                <select id='sex'>
+                                    <option value="ชาย">ชาย</option>
+                                    <option value="หญิง">หญิง</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label">สถานภาพ:</td>
+                            <td>
+                                <select id='status'>
+                                    <option value="โสด">โสด</option>
+                                    <option value="มีแฟน">มีแฟน</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input type="submit" class="submit" value="ผลลัพธ์" />
             </form>
         </div>
-        <div class="showChatProduct">
-            <div id='w5'>
-                <label id="label"></label>
-            </div>
-            <div id='w5'>
-                <label id="persen"></label>
-            </div>
-            
+        <hr />
+        <div class="showChartProduct">
+            <table id="ChartProduct" />
         </div>
     </body>
 </html>
