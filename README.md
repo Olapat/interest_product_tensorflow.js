@@ -3,3 +3,5 @@
 
 https://olapat.github.io/interest_product_tensorflow.js/
 
+<h5>open Console (ctrl + shift + j)<h5>
+
