@@ -85,7 +85,7 @@ const yTest = ys.slice([0, 0], [numTestData, numClass]);        //แบ่ง�
 
 
 //สร้าง model Neural Network
-let model = tf.sequential();  //สร้าง model
+const model = tf.sequential();  //สร้าง model
 
 //สร้าง layers hidden
 const hidden = tf.layers.dense({
@@ -135,20 +135,20 @@ async function train() {
 
 //function รับข้อมูลจาก index.html
 function getData() {
-    let getAge = document.getElementById('age').value; 
-    let getSex = document.getElementById('sex').value;
-    let getStatus = document.getElementById('status').value;
+    const getAge = document.getElementById('age').value; 
+    const getSex = document.getElementById('sex').value;
+    const getStatus = document.getElementById('status').value;
 
     // แทนข้อมูลให้เป็นตัวเลข เช่นเดียวกับการสร้างข้อมูลให้ AI เรียนรู้
-    let getAgeInt = parseInt(getAge);               //แปลง string เป็น int 
-    let getKeySex = getSex === 'ชาย' ? 0 : 1 ; 
-    let getKeyStatus = getStatus === 'โสด' ? 0 : 1;
+    const getAgeInt = parseInt(getAge);               //แปลง string เป็น int 
+    const getKeySex = getSex === 'ชาย' ? 0 : 1 ; 
+    const getKeyStatus = getStatus === 'โสด' ? 0 : 1;
 
-    let arrayData = [                               //ยัดข้อมูลที่แปลง ลง array 
+    const arrayData = [                               //ยัดข้อมูลที่แปลง ลง array 
         [getAgeInt / 100, getKeySex, getKeyStatus]
     ]
 
-    let dataTensor2D = tf.tensor2d(arrayData);      //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
+    const dataTensor2D = tf.tensor2d(arrayData);      //แปลงข้อมูลที่รับมาในเป็นรูบแปป tensor2d
     toAITest(dataTensor2D);                         //ส่งค่าไปที่ function toAITest เพื่อให้ AI วิเคราะห์
 }
 
@@ -157,9 +157,9 @@ function getData() {
 function toAITest(dataTest) {
     let chartMaxToMin = [];
     tf.tidy(() => {                                 //tidy เป็น function ที่จะคืนค่า memory หลังจากทำงานเสร็จ
-        let results = model.predict(dataTest);      //ส่งข้อมูลให้ AI วิเคราะห์
+        const results = model.predict(dataTest);      //ส่งข้อมูลให้ AI วิเคราะห์
         results.print();                            //แสดงผลลัพธ์ รูปแบบ arrayTensor
-        let resultsDataSync = results.dataSync();   //เก็บค่าผลลัพธ์ รูปแบบ float 32
+        const resultsDataSync = results.dataSync();   //เก็บค่าผลลัพธ์ รูปแบบ float 32
         chart = Array.from(resultsDataSync);        //แปลงผลลัพธ์ในเป็นรูปแบบ array ปกติ
         chartMaxToMin = chart.slice();              //clone array เพื่อนำไปเรียงลำดับ
         chartMaxToMin.sort(function(a, b){          //เรียงจาก มาก - น้อย
@@ -176,12 +176,12 @@ function displayResults(resultsChart) {
     let arrDisplay = [];
     resultsChart.forEach((va) => {
         //หาค่า index เพื่อแสดงข้อมูล ในรูปแบบ string
-        let indexLabalProduct = chart.indexOf(va);
+        const indexLabalProduct = chart.indexOf(va);
         //นำ index ที่ได้ มาดึงข้อมูลสินค้า
-        let displaylabalProduct = labalProduct[indexLabalProduct];  
+        const displaylabalProduct = labalProduct[indexLabalProduct];  
 
-        let persen = va * 100 // แปลงจาก ทศนิยม เป็น จำนวนเต็ม
-        let displayChartPersen = persen.toFixed(2);     //ปรับเป็นทศนิยม 2 ตำแหน่ง   
+        const persen = va * 100 // แปลงจาก ทศนิยม เป็น จำนวนเต็ม
+        const displayChartPersen = persen.toFixed(2);     //ปรับเป็นทศนิยม 2 ตำแหน่ง   
         
         arrDisplay.push(                                //เพิ่ม element (view) เข้าไป array arrDisplay
             `<tr>
